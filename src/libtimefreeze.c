@@ -53,6 +53,7 @@ static int s_timefreeze = 0;
 
 /* real functions */
 static int (*real__clock_gettime)(clockid_t, struct timespec *) = NULL;
+static int (*real__gettimeofday)(struct timeval *tv, void *tz) = NULL;
 
 
 /* prototypes */
@@ -86,13 +87,21 @@ int clock_gettime(clockid_t clk_id, struct timespec *ts)
 	return ret;
 }
 
-int timefreeze_gettimeofday(struct timeval *tv)
+int gettimeofday(struct timeval *tv, void *tz)
 {
-	struct timespec ts;
+	int ret;
 
-	tv_to_ts(tv, &ts);
-	int ret = clock_gettime(CLOCK_REALTIME, &ts);
-	ts_to_tv(&ts, tv);
+	if (shall_timefreeze()) {
+		struct timespec ts;
+		dbg("FAKE gettimeofday(%p)", tv);
+
+		tv_to_ts(tv, &ts);
+		ret = clock_gettime(CLOCK_REALTIME, &ts);
+		ts_to_tv(&ts, tv);
+	} else { /* real call */
+		dbg("REAL gettimeofday(%p)", tv);
+		ret = real__gettimeofday(tv, tz);
+	}
 
 	return ret;
 }
@@ -107,7 +116,14 @@ static void lib_init(void)
 	real__clock_gettime = dlsym(RTLD_NEXT, "clock_gettime");
 	ABORT_LOAD_FAILED(real__clock_gettime);
 
+	real__gettimeofday = dlsym(RTLD_NEXT, "gettimeofday");
+	ABORT_LOAD_FAILED(real__gettimeofday);
+
 	dbg("libtimefreeze is initialized");
+
+	s_dt_str = NULL;
+	memset(&s_dt_cache, 0, sizeof(s_dt_cache));
+	s_timefreeze = 0;
 	s_initialized = 1;
 }
 
