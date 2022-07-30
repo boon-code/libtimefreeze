@@ -182,9 +182,23 @@ _strip() {
 	"${OBJCOPY?}" --add-gnu-debuglink="${appfile}.debug" "${appfile}"
 }
 
+_build_needs_init() {
+	local ret=
+
+	[ ! -f "${BUILD_DIR}/Makefile" ] && \
+	[ ! -f "${BUILD_DIR}/rules.ninja" ]
+	ret=$?
+
+	if [ $ret -eq 0 ]; then
+		_dbg "Build needs to be initialized"
+	fi
+
+	return $ret
+}
+
 main() {
 	_parse_args "$@"
-	if [ ${incremental_build} -eq 0 ]; then
+	if [ ${incremental_build} -eq 0 ] || _build_needs_init; then
 		( _set_flags && _setup_cmake ) || _fail "Failed to prepare CMake build environment"
 	fi
 	_compile || _fail "Compilation failed"
