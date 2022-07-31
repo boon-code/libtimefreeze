@@ -43,10 +43,19 @@ _usage() {
 	_get_build_status
 }
 
+_is_ninja_build() {
+	[ -f "${BUILD_DIR}/rules.ninja" ] || \
+	[ -f "${BUILD_DIR}/build.ninja" ]
+}
+
+_is_make_build() {
+	[ -f "${BUILD_DIR}/Makefile" ]
+}
+
 _get_build_status() {
-	if [ -f "${BUILD_DIR}/Makefile" ]; then
+	if _is_make_build; then
 		echo "Build environment initialized using make"
-	elif [ -f "${BUILD_DIR}/rules.ninja" ]; then
+	elif _is_ninja_build; then
 		echo "Build environment initialized using ninja"
 	else
 		echo "Build environment not yet initialized"
@@ -146,7 +155,7 @@ _compile() {
 	elif [ ${force_make} -eq 1 ]; then
 		_make
 	else  # autodetect
-		if [ -f "${BUILD_DIR}/rules.ninja" ]; then
+		if _is_ninja_build; then
 			_ninja_build
 		else
 			_make
@@ -183,17 +192,12 @@ _strip() {
 }
 
 _build_needs_init() {
-	local ret=
-
-	[ ! -f "${BUILD_DIR}/Makefile" ] && \
-	[ ! -f "${BUILD_DIR}/rules.ninja" ]
-	ret=$?
-
-	if [ $ret -eq 0 ]; then
+	if _is_ninja_build || _is_make_build; then
+		return 1  # false
+	else
 		_dbg "Build needs to be initialized"
+		return 0  # true
 	fi
-
-	return $ret
 }
 
 main() {
