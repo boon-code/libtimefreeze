@@ -4,6 +4,7 @@
 #include <time.h>
 #include <string.h>
 #include <stdio.h>
+#include <sys/timeb.h>  /* for ftime() */
 
 /* definitions */
 
@@ -122,6 +123,25 @@ time_t time(time_t *tloc)
 	} else {
 		return real__time(tloc);
 	}
+}
+
+int ftime(struct timeb *tb)  /* NOT IMPLEMENTED YET */
+{
+	(void)tb;
+
+	fprintf(stderr, LOG_PREFIX "ftime is not supported\n");
+	abort();
+	return 0;
+}
+
+int timespec_get(struct timespec *ts, int base)  /* NOT IMPLEMENTED YET */
+{
+	(void)ts;
+	(void)base;
+
+	fprintf(stderr, LOG_PREFIX "timespec_get is not supported\n");
+	abort();
+	return 0;
 }
 
 /* private */
