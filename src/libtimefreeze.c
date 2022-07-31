@@ -4,6 +4,7 @@
 #include <time.h>
 #include <string.h>
 #include <stdio.h>
+#include <sys/time.h>
 #include <sys/timeb.h>  /* for ftime() */
 
 /* definitions */
