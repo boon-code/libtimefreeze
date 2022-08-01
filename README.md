@@ -1,6 +1,10 @@
 libtimefreeze
 =============
 
+[![pipeline](https://gitlab.com/zahnputzmonster/libtimefreeze/badges/main/pipeline.svg)](https://gitlab.com/zahnputzmonster/libtimefreeze/-/commits/main)
+
+[![codecov](https://codecov.io/gl/zahnputzmonster/libtimefreeze/branch/main/graph/badge.svg?token=719ZBL64D6)](https://codecov.io/gl/zahnputzmonster/libtimefreeze)
+
 This is a small shared library that can be preloaded to allow to set / freeze
 the real time clock while f.e. executing test cases that ddepend on the wall
 clock.
