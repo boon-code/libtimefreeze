@@ -5,9 +5,27 @@
 # Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
 # Note that environment variables can be set in several places
 # See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
+default:
+  image: "$CI_REGISTRY/zahnputzmonster/libtimefreeze:latest"
 stages:
 - test
 sast:
   stage: test
 include:
 - template: Security/SAST.gitlab-ci.yml
+job_test:
+  stage: test
+  before_script:
+    - curl -Os https://uploader.codecov.io/latest/linux/codecov && chmod +x codecov
+  script:
+    - ./run_tests.sh
+    - ./codecov -t ${CODECOV_TOKEN}
+  artifacts:
+    paths:
+      - .build/libtimefreeze.so
+      - .build/example
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.cobertura.xml
+    expire_in: 1 week
