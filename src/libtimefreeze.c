@@ -90,7 +90,11 @@ int clock_gettime(clockid_t clk_id, struct timespec *ts)
 	return ret;
 }
 
+#if defined(__GLIBC__) && (__GLIBC__ <= 2 ) && (__GLIBC_MINOR__ < 31)
+int gettimeofday(struct timeval *tv, struct timezone *tz)
+#else
 int gettimeofday(struct timeval *tv, void *tz)
+#endif
 {
 	int ret;
 
