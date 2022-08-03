@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
 
-project(timefreeze LANGUAGES C VERSION 0.0.1)
+set(MAJOR_VERSION 0)
+project(timefreeze LANGUAGES C VERSION "${MAJOR_VERSION}.0.1")
 
 option(DEBUG "Enable debug output to stderr if DBG environment variable is set" ON)
 
@@ -25,6 +26,7 @@ if(DEBUG)
 	target_compile_definitions(timefreeze PUBLIC TIMEFREEZE_DEBUG=1)
 endif()
 target_link_libraries(timefreeze dl)
+set_target_properties(timefreeze PROPERTIES SOVERSION "${MAJOR_VERSION}")
 
 add_executable(example "${CMAKE_CURRENT_SOURCE_DIR}/example/example.c")
 
