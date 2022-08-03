@@ -7,13 +7,14 @@ extern "C" {
 #include <sys/time.h>
 } /* extern "C" */
 
-#define TEST_TIME_SEC 1641027601
+#include "data.h"
+
 
 class TestTime : public ::testing::Test {
 public:
 	TestTime()
 	{
-		setenv("TIMEFREEZE", "2022-01-01 09:00:01", 1); // UTC
+		setenv("TIMEFREEZE", TEST_TIME_STR, 1); // UTC
 	}
 
 	~TestTime()
@@ -21,9 +22,11 @@ public:
 		setenv("TIMEFREEZE", "", 1);  // Disable again
 	}
 
-private:
-	static const time_t test_time_sec = 1641027601;
+protected:
+	static const time_t test_time_sec;
 };
+
+const time_t TestTime::test_time_sec = TEST_TIME_SEC;
 
 TEST_F(TestTime, clock_gettime_CLOCK_REALTIME)
 {
@@ -32,7 +35,7 @@ TEST_F(TestTime, clock_gettime_CLOCK_REALTIME)
 
 	ASSERT_EQ(0, clock_gettime(CLOCK_REALTIME, &ts));
 	EXPECT_EQ(0, ts.tv_nsec);
-	EXPECT_EQ(1641027601, ts.tv_sec);
+	EXPECT_EQ(test_time_sec, ts.tv_sec);
 }
 
 TEST_F(TestTime, clock_gettime_CLOCK_REALTIME_COARSE)
@@ -42,7 +45,7 @@ TEST_F(TestTime, clock_gettime_CLOCK_REALTIME_COARSE)
 
 	ASSERT_EQ(0, clock_gettime(CLOCK_REALTIME_COARSE, &ts));
 	EXPECT_EQ(0, ts.tv_nsec);
-	EXPECT_EQ(1641027601, ts.tv_sec);
+	EXPECT_EQ(test_time_sec, ts.tv_sec);
 }
 
 TEST_F(TestTime, gettimeofday)
@@ -52,19 +55,16 @@ TEST_F(TestTime, gettimeofday)
 
 	ASSERT_EQ(0, gettimeofday(&tv, nullptr));
 	EXPECT_EQ(0, tv.tv_usec);
-	EXPECT_EQ(1641027601, tv.tv_sec);
+	EXPECT_EQ(test_time_sec, tv.tv_sec);
 }
 
 TEST_F(TestTime, time)
 {
-	EXPECT_EQ(1641027601, time(nullptr));
-
-	time_t val = 0;
-	EXPECT_EQ(1641027601, time(&val));
+	EXPECT_EQ(test_time_sec, time(nullptr));
 }
 
 TEST_F(TestTime, time_With_tloc)
 {
 	time_t val = 0;
-	EXPECT_EQ(1641027601, time(&val));
+	EXPECT_EQ(test_time_sec, time(&val));
 }
