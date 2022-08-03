@@ -263,7 +263,7 @@ static void tv_to_ts(const struct timeval *tv, struct timespec *ts)
 
 static int tm_to_ts(struct tm *tm, struct timespec *ts)
 {
-	time_t ret = mktime(tm);
+	time_t ret = timegm(tm);
 	if (ret == -1) {
 		return -1;
 	} else {

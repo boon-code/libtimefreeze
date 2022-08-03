@@ -26,7 +26,7 @@ static int print_time(const char *desc, struct timespec *out)
 	struct tm tm;
 	int ret = clock_gettime(CLOCK_REALTIME, &ts);
 
-	localtime_r(&ts.tv_sec, &tm);
+	gmtime_r(&ts.tv_sec, &tm);
 
 	memset(s_timebuf, 0, sizeof(s_timebuf));
 	strftime(s_timebuf, sizeof(s_timebuf), "%Y-%m-%d %T", &tm);
