@@ -86,3 +86,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     apt-get install -y --no-install-recommends \
         git \
  && rm -rf /var/lib/apt/lists/*
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get update \
+ && DEBIAN_FRONTEND=noninteractive \
+    apt-get install -y --no-install-recommends \
+        libgtest-dev \
+ && rm -rf /var/lib/apt/lists/*
