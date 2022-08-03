@@ -25,11 +25,22 @@ private:
 	static const time_t test_time_sec = 1641027601;
 };
 
-TEST_F(TestTime, clock_gettime)
+TEST_F(TestTime, clock_gettime_CLOCK_REALTIME)
 {
 	timespec ts;
 	memset(&ts, 0, sizeof(ts));
+
 	ASSERT_EQ(0, clock_gettime(CLOCK_REALTIME, &ts));
+	EXPECT_EQ(0, ts.tv_nsec);
+	EXPECT_EQ(1641027601, ts.tv_sec);
+}
+
+TEST_F(TestTime, clock_gettime_CLOCK_REALTIME_COARSE)
+{
+	timespec ts;
+	memset(&ts, 0, sizeof(ts));
+
+	ASSERT_EQ(0, clock_gettime(CLOCK_REALTIME_COARSE, &ts));
 	EXPECT_EQ(0, ts.tv_nsec);
 	EXPECT_EQ(1641027601, ts.tv_sec);
 }
@@ -38,6 +49,7 @@ TEST_F(TestTime, gettimeofday)
 {
 	timeval tv;
 	memset(&tv, 0, sizeof(tv));
+
 	ASSERT_EQ(0, gettimeofday(&tv, nullptr));
 	EXPECT_EQ(0, tv.tv_usec);
 	EXPECT_EQ(1641027601, tv.tv_sec);
