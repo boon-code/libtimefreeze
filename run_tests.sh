@@ -20,11 +20,28 @@ _run_gtest_example() {
 	   ./example/gtest_example/build/tests
 }
 
+_run_unit_tests() {
+    # Run unit tests with and without TIMEFREEZE_DEBUG
+
+    ( \
+        cd tests/ \
+        && mkdir build/ \
+        && cd build \
+        && _cmake_build ..
+    ) \
+	&& TIMEFREEZE_DEBUG=1 \
+	   LD_PRELOAD=./.build/libtimefreeze.so \
+	   ./tests/build/tests \
+	&& LD_PRELOAD=./.build/libtimefreeze.so \
+	   ./tests/build/tests
+}
+
 _run_c_example() {
     ./run_example.sh
 }
 
 ./build.sh -N -c \
+    && _run_unit_tests \
     && _run_c_example \
     && _run_gtest_example \
     && gcovr . --xml-pretty > coverage.cobertura.xml
