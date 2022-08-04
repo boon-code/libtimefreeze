@@ -9,4 +9,4 @@ target_include_directories(tests PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}"
     ${GTEST_INCLUDE_DIRS}
 )
-target_link_libraries(tests ${GTEST_LIBRARIES})
+target_link_libraries(tests ${GTEST_LIBRARIES} pthread)
