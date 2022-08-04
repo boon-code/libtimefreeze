@@ -22,7 +22,7 @@ job_test:
     - ./codecov -t ${CODECOV_TOKEN}
   artifacts:
     paths:
-      - .build/libtimefreeze.so
+      - .build/libtimefreeze.so.*
       - .build/example
     reports:
       coverage_report:

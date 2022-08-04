@@ -9,6 +9,9 @@ _cmake_build() {
 }
 
 _run_gtest_example() {
+    # Update README.md if the soversion changes
+    local libname="libtimefreeze.so.0"
+
     ( \
         cd example/gtest_example/ \
         && mkdir -p build/ \
@@ -16,7 +19,7 @@ _run_gtest_example() {
         && _cmake_build ..
     ) \
 	&& TIMEFREEZE_DEBUG=1 \
-	   LD_PRELOAD=./.build/libtimefreeze.so \
+	   LD_PRELOAD="./.build/$libname" \
 	   ./example/gtest_example/build/tests
 }
 
