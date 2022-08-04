@@ -11,7 +11,7 @@ _cmake_build() {
 _run_gtest_example() {
     ( \
         cd example/gtest_example/ \
-        && mkdir build/ \
+        && mkdir -p build/ \
         && cd build \
         && _cmake_build ..
     ) \
@@ -25,7 +25,7 @@ _run_unit_tests() {
 
     ( \
         cd tests/ \
-        && mkdir build/ \
+        && mkdir -p build/ \
         && cd build \
         && _cmake_build ..
     ) \
