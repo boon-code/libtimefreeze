@@ -51,4 +51,4 @@ executable called `tests`, you would typically run your tests like this:
 This way, your test cases are not affected at first, as `TIMEFREEZE` is not
 yet set. The `TIMEFREEZE` variable will only be set in the test cases that
 require a faked time to succeed.
-A GoogleTest example can be found here: [test\_time.cpp](example/gtest_example/src/test_time.cpp)
+A GoogleTest example can be found here: [test\_time.cpp](examples/gtest_example/src/test_time.cpp)
