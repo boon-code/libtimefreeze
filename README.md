@@ -5,6 +5,8 @@ libtimefreeze
 
 [![codecov](https://codecov.io/gl/zahnputzmonster/libtimefreeze/branch/main/graph/badge.svg?token=719ZBL64D6)](https://codecov.io/gl/zahnputzmonster/libtimefreeze)
 
+*Obsolete*: Use `libfaketime` instead (please read below)
+
 This is a small shared library that can be preloaded to allow to set / freeze
 the real time clock while f.e. executing test cases that ddepend on the wall
 clock.
@@ -14,11 +16,16 @@ dependend signatures. During the test case, the environment variable
 statically created and the same certificate can be used for failing and passing
 tests by only changing `TIMEFREEZE` accordingly.
 
-For most other use cases, you should checkout libfaketime, which is a much more
-complete and prooven in use solution to fake the current time:
+I recommend using `libfaketime` as it is a much more complete, widely support
+and prooven in use solution to fake the current time:
 - https://github.com/wolfcw/libfaketime.git
 
 This library is heavily inspired by the awsome `libfaketime`.
+
+Originally, it seemed that this use case is not possible with `libfaketime`.
+By setting the environment variable `FAKETIME_NO_CACHE` to `1`, the use case can
+be accomplished in a similar way.
+
 
 # Usage
 
