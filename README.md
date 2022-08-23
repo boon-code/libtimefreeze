@@ -8,7 +8,7 @@ libtimefreeze
 *Obsolete*: Use `libfaketime` instead (please read below)
 
 This is a small shared library that can be preloaded to allow to set / freeze
-the real time clock while f.e. executing test cases that ddepend on the wall
+the real time clock while f.e. executing test cases that depend on the wall
 clock.
 A good example of this use-case is testing certificate handling and time
 dependend signatures. During the test case, the environment variable
